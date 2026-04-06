@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wikipedia Browsing History Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🦊 Wikipedia Browsing History Visualizer</h1>
+            <p>Visualize your Wikipedia browsing patterns from Chrome or Firefox</p>
+        </header>
+
+        <div id="upload-section" class="upload-section">
+            <div class="drop-zone" id="drop-zone">
+                <div class="drop-zone-content">
+                    <div class="drop-zone-icon">📁</div>
+                    <p>Drag & Drop your browser history file here</p>
+                    <p class="drop-zone-hint">or click to select a file</p>
+                    <input type="file" id="file-input" accept=".sqlite,.sqlite3,.db">
+                </div>
+            </div>
+
+            <div class="instructions">
+                <h3>How to export your history:</h3>
+                <details>
+                    <summary><strong>Chrome</strong></summary>
+                    <ol>
+                        <li>Close Chrome completely</li>
+                        <li>Navigate to your Chrome profile folder:
+                            <ul>
+                                <li><strong>Windows:</strong> <code>%LOCALAPPDATA%\Google\Chrome\User Data\Default\History</code></li>
+                                <li><strong>macOS:</strong> <code>~/Library/Application&nbsp;Support/Google/Chrome/Default/History</code></li>
+                                <li><strong>Linux:</strong> <code>~/.config/google-chrome/Default/History</code></li>
+                            </ul>
+                        </li>
+                        <li>Copy the <code>History</code> file to somewhere accessible</li>
+                        <li>Drag it onto this page</li>
+                    </ol>
+                </details>
+                <details>
+                    <summary><strong>Firefox</strong></summary>
+                    <ol>
+                        <li>Close Firefox completely</li>
+                        <li>Navigate to your Firefox profile folder:
+                            <ul>
+                                <li><strong>Windows:</strong> <code>%APPDATA%\Mozilla\Firefox\Profiles\[profile]\places.sqlite</code></li>
+                                <li><strong>macOS:</strong> <code>~/Library/Application Support/Firefox/Profiles/[profile]/places.sqlite</code></li>
+                                <li><strong>Linux:</strong> <code>~/.mozilla/firefox/[profile]/places.sqlite</code></li>
+                            </ul>
+                        </li>
+                        <li>Copy the <code>places.sqlite</code> file to somewhere accessible</li>
+                        <li>Drag it onto this page</li>
+                    </ol>
+                </details>
+                <p class="privacy-note">🔒 <strong>Privacy:</strong> All processing happens in your browser. Your history data never leaves your computer.</p>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Processing your history...</p>
+        </div>
+
+        <div id="visualization-section" class="visualization-section hidden">
+            <div class="controls">
+                <button id="reset-btn" type="button" class="btn">Reset View</button>
+                <button id="back-btn" type="button" class="btn">← Load Different File</button>
+                <div class="stats">
+                    <span id="node-count">0 pages</span> |
+                    <span id="link-count">0 connections</span>
+                </div>
+            </div>
+            <div id="graph-container"></div>
+            <div id="tooltip" class="tooltip hidden"></div>
+        </div>
+    </div>
+
+    <!-- Load sql.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+    <!-- Load D3.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <!-- Application code -->
+    <script src="app.js"></script>
+</body>
+</html>
