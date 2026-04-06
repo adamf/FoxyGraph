@@ -16,9 +16,7 @@ Visualize your Wikipedia browsing patterns with an interactive force-directed gr
 
 ### Option 1: Use Online (Recommended)
 
-1. Open `modern/index.html` in any modern web browser
-2. Drag and drop your browser history file onto the page
-3. Explore your Wikipedia browsing graph!
+Visit **[https://adamf.github.io/FoxyGraph/](https://adamf.github.io/FoxyGraph/)** to use the app directly in your browser.
 
 ### Option 2: Run Locally
 
@@ -85,6 +83,9 @@ xdg-open FoxyGraph/modern/index.html
 
 ```
 FoxyGraph/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml     # GitHub Pages deployment workflow
 ├── modern/                 # Modern client-side application
 │   ├── index.html         # Main HTML file - open this in your browser
 │   ├── app.js             # Application JavaScript
@@ -94,6 +95,25 @@ FoxyGraph/
 ├── README.md             # This file
 └── LICENSE               # MIT License
 ```
+
+## 🚢 Deployment
+
+This application can be deployed to GitHub Pages with zero configuration:
+
+1. **Enable GitHub Pages** in your repository settings:
+   - Go to Settings → Pages
+   - Under "Build and deployment", select "GitHub Actions"
+
+2. **Push to main branch** - The included workflow (`.github/workflows/deploy.yml`) will automatically deploy to GitHub Pages
+
+3. **Access your app** at `https://<username>.github.io/FoxyGraph/`
+
+### Other Deployment Options
+
+Since the app is 100% static files, you can also deploy to:
+- **Netlify**: Drag and drop the `modern/` folder
+- **Vercel**: Connect your repo and set the root directory to `modern/`
+- **Any static hosting**: Just upload the contents of the `modern/` folder
 
 ## 🔄 Migration from Legacy Version
 
