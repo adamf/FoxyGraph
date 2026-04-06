@@ -18,6 +18,7 @@ const CONFIG = {
 let simulation = null;
 let svg = null;
 let db = null;
+let currentZoom = null;
 
 // DOM Elements
 const dropZone = document.getElementById('drop-zone');
@@ -459,7 +460,7 @@ function createForceGraph(graphData) {
     });
     
     // Store zoom for reset
-    svg.property('zoom', zoom);
+    currentZoom = zoom;
     
     function dragstarted(event, d) {
         if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -516,12 +517,11 @@ function truncate(str, maxLength) {
 }
 
 function resetView() {
-    if (svg) {
-        const zoom = svg.property('zoom');
+    if (svg && currentZoom) {
         // Reset to initial view (identity transform)
         svg.transition()
             .duration(750)
-            .call(zoom.transform, d3.zoomIdentity);
+            .call(currentZoom.transform, d3.zoomIdentity);
     }
 }
 
@@ -533,6 +533,7 @@ function goBack() {
         db.close();
         db = null;
     }
+    currentZoom = null;
     showUpload();
 }
 
