@@ -4,6 +4,16 @@
  * from Chrome and Firefox browser history files.
  */
 
+// Configuration constants
+const CONFIG = {
+    // Threshold for showing labels on nodes (percentage of max visits)
+    LABEL_VISIBILITY_THRESHOLD: 0.3,
+    // Maximum number of nodes for a "small graph" where all labels are shown
+    SMALL_GRAPH_NODE_LIMIT: 50,
+    // Minimum visit count for color/size scaling
+    MIN_VISITS_FOR_SCALING: 1
+};
+
 // Global state
 let simulation = null;
 let svg = null;
@@ -353,13 +363,14 @@ function createForceGraph(graphData) {
     const height = container.clientHeight;
     
     // Color scale based on visit count
-    const maxVisits = Math.max(...graphData.nodes.map(n => n.visits));
+    // Ensure minimum scaling value to handle edge case of zero visits
+    const maxVisits = Math.max(...graphData.nodes.map(n => n.visits), CONFIG.MIN_VISITS_FOR_SCALING);
     const colorScale = d3.scaleSequential(d3.interpolateOranges)
-        .domain([0, Math.max(maxVisits, 1)]);
+        .domain([0, maxVisits]);
     
     // Size scale based on visits
     const sizeScale = d3.scaleSqrt()
-        .domain([1, Math.max(maxVisits, 1)])
+        .domain([CONFIG.MIN_VISITS_FOR_SCALING, maxVisits])
         .range([4, 20]);
     
     // Create SVG
@@ -424,8 +435,14 @@ function createForceGraph(graphData) {
             window.open(d.url, '_blank');
         });
     
-    // Add labels to larger nodes
-    node.filter(d => d.visits >= maxVisits * 0.3 || graphData.nodes.length < 50)
+    // Add labels to larger nodes (based on visit threshold or small graph size)
+    const shouldShowLabel = (d) => {
+        const meetsVisitThreshold = d.visits >= maxVisits * CONFIG.LABEL_VISIBILITY_THRESHOLD;
+        const isSmallGraph = graphData.nodes.length < CONFIG.SMALL_GRAPH_NODE_LIMIT;
+        return meetsVisitThreshold || isSmallGraph;
+    };
+    
+    node.filter(shouldShowLabel)
         .append('text')
         .attr('dy', d => sizeScale(d.visits) + 12)
         .text(d => truncate(d.name, 20));
@@ -500,12 +517,11 @@ function truncate(str, maxLength) {
 
 function resetView() {
     if (svg) {
-        const width = graphContainer.clientWidth;
-        const height = graphContainer.clientHeight;
         const zoom = svg.property('zoom');
+        // Reset to initial view (identity transform)
         svg.transition()
             .duration(750)
-            .call(zoom.transform, d3.zoomIdentity.translate(width / 2, height / 2).scale(1).translate(-width / 2, -height / 2));
+            .call(zoom.transform, d3.zoomIdentity);
     }
 }
 

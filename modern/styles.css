@@ -65,9 +65,9 @@ header p {
     margin-bottom: 10px;
 }
 
-.drop-zone-hint {
+.drop-zone .drop-zone-hint {
     color: #6b7280;
-    font-size: 0.9rem !important;
+    font-size: 0.9rem;
 }
 
 #file-input {
@@ -250,9 +250,12 @@ code {
     stroke: #f97316;
 }
 
-/* Utility Classes */
-.hidden {
-    display: none !important;
+/* Utility Classes - Using high specificity to override other styles */
+.container .hidden,
+.visualization-section .hidden,
+.upload-section .hidden,
+body .hidden {
+    display: none;
 }
 
 /* Responsive */

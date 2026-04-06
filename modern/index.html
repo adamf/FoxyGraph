@@ -78,10 +78,20 @@
         </div>
     </div>
 
-    <!-- Load sql.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
-    <!-- Load D3.js from CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+    <!--
+        External Libraries
+        Note: These scripts are loaded from CDN with subresource integrity (SRI) hashes.
+        To regenerate SRI hashes if needed:
+        curl -s URL | openssl dgst -sha384 -binary | openssl base64 -A
+    -->
+    <!-- Load sql.js from CDN - SQLite compiled to WebAssembly -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"
+            integrity="sha384-bMqZ27IPEF96gMM/wm8q/Y/sSfK5d8YbzR1RJ+sKZ4nXyLH/FqLZ4P4mxnPTSmH+"
+            crossorigin="anonymous"></script>
+    <!-- Load D3.js from CDN - Data visualization library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"
+            integrity="sha384-g0V4+sevtjUHqOJ+FZOqVqnLlHMnwvEJ82wnK2zUohG8l7+Bq5cFXxaC+0d7dLHT"
+            crossorigin="anonymous"></script>
     <!-- Application code -->
     <script src="app.js"></script>
 </body>
